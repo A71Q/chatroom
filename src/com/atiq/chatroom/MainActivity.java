@@ -127,6 +127,9 @@ public class MainActivity extends Activity {
 
             lblMessage.append(msg + "\n");
             lblMessage.setMovementMethod(new ScrollingMovementMethod());
+            lblMessage.setScrollBarStyle(0x03000000);
+            lblMessage.setVerticalScrollBarEnabled(true);
+            lblMessage.setTextColor(0xFF000000);
             Toast.makeText(getApplicationContext(), "New Message: " + msg, Toast.LENGTH_LONG).show();
 
             WakeLocker.release();

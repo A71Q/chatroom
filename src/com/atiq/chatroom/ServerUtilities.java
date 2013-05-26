@@ -24,6 +24,7 @@ public final class ServerUtilities {
     private static final int BACK_OFF_MILLI_SECONDS = 2000;
     private static final Random random = new Random();
 
+
     static void register(final Context context, String name, String email, final String regId) {
         Log.i(TAG, "registering device (regId = " + regId + ")");
         String serverUrl = SERVER_URL_REG;
@@ -68,6 +69,7 @@ public final class ServerUtilities {
     }
 
     static void sendTextToServerForBroadcast(final Context context, String text, String regId) {
+        AlertDialogManager alert = new AlertDialogManager();
         String serverUrl = SERVER_URL_BROADCAST;
         Map<String, String> params = new HashMap<String, String>();
         params.put("text", text);
@@ -80,8 +82,10 @@ public final class ServerUtilities {
         for (int i = 1; i <= MAX_ATTEMPTS; i++) {
             Log.d(TAG, "Attempt #" + i + " to send text");
             try {
+//                alert.showAlertDialog(context, "Text Sending ...", text, true);
+                CommonUtilities.displayMessage(context, "Sending message: " + text + " ...");
                 post(serverUrl, params);
-                CommonUtilities.displayMessage(context, "123");
+                CommonUtilities.displayMessage(context, "Sending successful: " + text);
                 return;
             } catch (IOException e) {
                 // Here we are simplifying and retrying on any error; in a real
@@ -103,11 +107,12 @@ public final class ServerUtilities {
                 backOff *= 2;
             }
         }
+//        alert.showAlertDialog(context, "Text Sending failed", text, false);
         CommonUtilities.displayMessage(context, "Failed to send text!");
     }
 
     /**
-     * Unregister this account/device pair within the server.
+     * UnRegister this account/device pair within the server.
      */
     static void unRegister(final Context context, final String regId) {
         Log.i(TAG, "unRegistering device (regId = " + regId + ")");
